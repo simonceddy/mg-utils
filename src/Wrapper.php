@@ -36,7 +36,7 @@ class Wrapper
 
     public function ping(string $url, bool $dataOnSuccess = true)
     {
-        $res = $this->client()->request($url);
+        $res = $this->client()->request('GET', $url);
         $status = $res->getStatusCode();
         $result = $status === 200 || $status === 300;
         if ($result && $dataOnSuccess) {
