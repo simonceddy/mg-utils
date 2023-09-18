@@ -30,7 +30,7 @@ class URL
 {
     public const BASE = 'https://www.modulargrid.net';
 
-    public static array $shothand = [
+    public static array $shorthand = [
         'eurorack' => 'e',
         'pedal' => 'p',
         'buchla' => 'u',
@@ -45,10 +45,10 @@ class URL
 
     private function urlForCategory(string $category)
     {
-        if (in_array($category, static::$shothand)) {
+        if (in_array($category, static::$shorthand)) {
             $short = $category;
-        } else if (isset(static::$shothand[$category])) {
-            $short = static::$shothand[$category];
+        } else if (isset(static::$shorthand[$category])) {
+            $short = static::$shorthand[$category];
         } else {
             throw new \LogicException(
                 'Unknown category: ' . $category
