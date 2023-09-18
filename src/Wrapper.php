@@ -36,7 +36,10 @@ class Wrapper
 
     public function ping(string $url, bool $dataOnSuccess = true)
     {
-        $res = $this->client()->request('GET', $url);
+        $res = $this->client()->request('GET', $url, [
+            'connect_timeout' => 5,
+            'http_errors' => false,
+        ]);
         $status = $res->getStatusCode();
         $result = $status === 200 || $status === 300;
         if ($result && $dataOnSuccess) {
