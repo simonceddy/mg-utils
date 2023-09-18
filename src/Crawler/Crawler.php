@@ -22,6 +22,11 @@ class Crawler
         return (new ScanTags($this->crawler))->scan();
     }
 
+    public function rackJson()
+    {
+        return (new GetRackJson($this->crawler))->scan();
+    }
+
     public function __call($name, $arguments)
     {
         if (method_exists($this->crawler, $name)) {
