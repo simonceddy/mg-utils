@@ -32,6 +32,17 @@ class Wrapper
         return new Crawler($html);
     }
 
+    public function ping(string $url, bool $dataOnSuccess = true)
+    {
+        $res = $this->client()->request($url);
+        $status = $res->getStatusCode();
+        $result = $status === 200 || $status === 300;
+        if ($result && $dataOnSuccess) {
+            return $res->getBody()->getContents();
+        }
+        return $result;
+    }
+
     public function __get($name)
     {
         if ($name === 'url') return new URL();
