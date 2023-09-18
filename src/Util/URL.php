@@ -4,26 +4,26 @@ namespace Eddy\ModularGrid\Util;
 /**
  * URL Object
  * 
- * @method string forEurorack(string $slug)
- * @method string forPedal(string $slug)
- * @method string forBuchla(string $slug)
- * @method string forFrac(string $slug)
- * @method string forMOTM(string $slug)
- * @method string forModcan(string $slug)
- * @method string forMU(string $slug)
- * @method string forSerge(string $slug)
- * @method string for500(string $slug)
- * @method string forAE(string $slug)
- * @method static string forEurorack(string $slug)
- * @method static string forPedal(string $slug)
- * @method static string forBuchla(string $slug)
- * @method static string forFrac(string $slug)
- * @method static string forMOTM(string $slug)
- * @method static string forModcan(string $slug)
- * @method static string forMU(string $slug)
- * @method static string forSerge(string $slug)
- * @method static string for500(string $slug)
- * @method static string forAE(string $slug)
+ * @method string forEurorack(string $slug, bool $noBase = false)
+ * @method string forPedal(string $slug, bool $noBase = false)
+ * @method string forBuchla(string $slug, bool $noBase = false)
+ * @method string forFrac(string $slug, bool $noBase = false)
+ * @method string forMOTM(string $slug, bool $noBase = false)
+ * @method string forModcan(string $slug, bool $noBase = false)
+ * @method string forMU(string $slug, bool $noBase = false)
+ * @method string forSerge(string $slug, bool $noBase = false)
+ * @method string for500(string $slug, bool $noBase = false)
+ * @method string forAE(string $slug, bool $noBase = false)
+ * @method static string forEurorack(string $slug, bool $noBase = false)
+ * @method static string forPedal(string $slug, bool $noBase = false)
+ * @method static string forBuchla(string $slug, bool $noBase = false)
+ * @method static string forFrac(string $slug, bool $noBase = false)
+ * @method static string forMOTM(string $slug, bool $noBase = false)
+ * @method static string forModcan(string $slug, bool $noBase = false)
+ * @method static string forMU(string $slug, bool $noBase = false)
+ * @method static string forSerge(string $slug, bool $noBase = false)
+ * @method static string for500(string $slug, bool $noBase = false)
+ * @method static string forAE(string $slug, bool $noBase = false)
  * 
  */
 class URL
@@ -43,7 +43,7 @@ class URL
         'ae' => 't',
     ];
 
-    private function urlForCategory(string $category)
+    private function urlForCategory(string $category, bool $noBase = false)
     {
         if (in_array($category, static::$shorthand)) {
             $short = $category;
@@ -55,12 +55,12 @@ class URL
             );
         }
 
-        return static::BASE . '/' . $short;
+        return $noBase ? $short : static::BASE . '/' . $short;
     }
 
-    private function urlForItem(string $category, $slug)
+    private function urlForItem(string $category, $slug, bool $noBase = false)
     {
-        return $this->urlForCategory($category) . '/' . $slug;
+        return $this->urlForCategory($category, $noBase) . '/' . $slug;
     }
 
     public function __call($name, $arguments)
@@ -70,7 +70,7 @@ class URL
             && is_string($arguments[0])
         ) {
             $n = strtolower(preg_replace('/^for/', '', $name));
-            return $this->urlForItem($n, $arguments[0]);
+            return $this->urlForItem($n, ...$arguments);
         }
     }
 
