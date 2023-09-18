@@ -1,6 +1,7 @@
 <?php
 namespace Eddy\ModularGrid;
 
+use Eddy\ModularGrid\Crawler\Crawler;
 use Eddy\ModularGrid\Util\URL;
 use GuzzleHttp\Client as Guzzle;
 
@@ -15,13 +16,26 @@ class Wrapper
 {
     public function __construct(private ?Guzzle $guzzle = null)
     {
-        if (!$guzzle) $this->guzzle = new Guzzle();
+        // if (!$guzzle) $this->guzzle = new Guzzle();
+    }
+
+    public function client()
+    {
+        if (!isset($this->guzzle)) {
+            $this->guzzle = new Guzzle();
+        }
+        return $this->guzzle;
+    }
+    
+    public function crawl(string $html)
+    {
+        return new Crawler($html);
     }
 
     public function __get($name)
     {
         if ($name === 'url') return new URL();
-        if ($name === 'guzzle' || $name === 'client') return $this->guzzle;
+        if ($name === 'guzzle' || $name === 'client') return $this->client();
 
         throw new \OutOfRangeException('Undefined property: ' . $name);
     }

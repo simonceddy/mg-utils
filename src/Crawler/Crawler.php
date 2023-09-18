@@ -21,4 +21,11 @@ class Crawler
     {
         return (new ScanTags($this->crawler))->scan();
     }
+
+    public function __call($name, $arguments)
+    {
+        if (method_exists($this->crawler, $name)) {
+            return call_user_func_array([$this->crawler, $name], $arguments);
+        }
+    }
 }
