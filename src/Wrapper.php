@@ -22,7 +22,9 @@ class Wrapper
     public function client()
     {
         if (!isset($this->guzzle)) {
-            $this->guzzle = new Guzzle();
+            $this->guzzle = new Guzzle([
+                'base_uri' => URL::BASE
+            ]);
         }
         return $this->guzzle;
     }
