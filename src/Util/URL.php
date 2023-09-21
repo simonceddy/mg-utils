@@ -31,9 +31,9 @@ class URL
     public const BASE = 'https://www.modulargrid.net';
 
     public static array $shorthand = [
-        '500' => 'a',
-        'pedal' => 'p',
         'eurorack' => 'e',
+        'pedal' => 'p',
+        '500' => 'a',
         'mu' => 'd',
         'frac' => 'f',
         'serge' => 's',
