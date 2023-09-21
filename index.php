@@ -9,6 +9,7 @@ $mg = new \Eddy\ModularGrid\Wrapper();
 $url = $mg->url->forPedal('elektron-overhub');
 $client = new \GuzzleHttp\Client();
 $res = $client->request('GET', $url);
+echo 'Response received' . PHP_EOL;
 $body = $res->getBody()->getContents();
 $crawler = $mg->crawl($body);
 

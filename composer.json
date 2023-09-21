@@ -23,7 +23,9 @@
         "symfony/dom-crawler": "^6.3",
         "guzzlehttp/guzzle": "^7.8",
         "symfony/css-selector": "^6.3",
-        "kevinrob/guzzle-cache-middleware": "^4.1"
+        "kevinrob/guzzle-cache-middleware": "^4.1",
+        "doctrine/cache": "^2.2",
+        "illuminate/cache": "^10.24"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.3"

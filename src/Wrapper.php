@@ -5,8 +5,10 @@ use Eddy\ModularGrid\Crawler\Crawler;
 use Eddy\ModularGrid\Util\URL;
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\HandlerStack;
+use Illuminate\Support\Facades\Cache;
 use Kevinrob\GuzzleCache\CacheMiddleware;
-
+use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
+use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
 /**
  * Wrapper class for basic functionality
  * 
@@ -24,7 +26,11 @@ class Wrapper
     private function initGuzzle()
     {
         $stack = HandlerStack::create();
-        $stack->push(new CacheMiddleware(), 'cache');
+        $stack->push(new CacheMiddleware(
+            new PrivateCacheStrategy(
+                new LaravelCacheStorage(Cache::store('redis'))
+            )
+        ), 'cache');
         $this->guzzle = new Guzzle([
             'base_uri' => URL::BASE,
             'handler' => $stack,
