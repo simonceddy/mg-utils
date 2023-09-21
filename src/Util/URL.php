@@ -31,16 +31,16 @@ class URL
     public const BASE = 'https://www.modulargrid.net';
 
     public static array $shorthand = [
-        'ae' => 't',
+        '500' => 'a',
+        'pedal' => 'p',
+        'eurorack' => 'e',
         'mu' => 'd',
         'frac' => 'f',
         'serge' => 's',
         'buchla' => 'u',
         'modcan' => 'c',
         'motm' => 'm',
-        '500' => 'a',
-        'pedal' => 'p',
-        'eurorack' => 'e',
+        'ae' => 't',
     ];
 
     private function urlForCategory(string $category, bool $noBase = false)
