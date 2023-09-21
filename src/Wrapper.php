@@ -4,6 +4,8 @@ namespace Eddy\ModularGrid;
 use Eddy\ModularGrid\Crawler\Crawler;
 use Eddy\ModularGrid\Util\URL;
 use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\HandlerStack;
+use Kevinrob\GuzzleCache\CacheMiddleware;
 
 /**
  * Wrapper class for basic functionality
@@ -19,13 +21,19 @@ class Wrapper
         // if (!$guzzle) $this->guzzle = new Guzzle();
     }
 
+    private function initGuzzle()
+    {
+        $stack = HandlerStack::create();
+        $stack->push(new CacheMiddleware(), 'cache');
+        $this->guzzle = new Guzzle([
+            'base_uri' => URL::BASE,
+            'handler' => $stack,
+        ]);
+    }
+
     public function client()
     {
-        if (!isset($this->guzzle)) {
-            $this->guzzle = new Guzzle([
-                'base_uri' => URL::BASE
-            ]);
-        }
+        if (!isset($this->guzzle)) $this->initGuzzle();
         return $this->guzzle;
     }
     
