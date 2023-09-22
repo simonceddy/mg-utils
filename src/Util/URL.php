@@ -43,6 +43,8 @@ class URL
         'ae' => 't',
     ];
 
+    private static $rackViewPattern = '/https:\/\/www\.modulargrid\.net\/[A-Za-z]\/racks\/view\/[0-9]+/i';
+
     private function urlForCategory(string $category, bool $noBase = false)
     {
         if (in_array($category, static::$shorthand)) {
@@ -80,7 +82,17 @@ class URL
             && isset($arguments[0])
             && is_string($arguments[0])
         ) {
-            return call_user_func([new self(), $name], $arguments[0]);
+            return call_user_func([new self(), $name], ...$arguments);
+        }
+    }
+
+    public static function extractCategory(string $url)
+    {
+        if (preg_match(self::$rackViewPattern, $url)) {
+            // Viewing a rack
+            $rg = '/^https:\/\/www\.modulargrid\.net\//';
+            $a = substr(preg_replace($rg, '', $url), 0, 1);
+            return $a;
         }
     }
 }

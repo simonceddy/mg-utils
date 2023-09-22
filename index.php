@@ -6,14 +6,17 @@ require 'vendor/autoload.php';
 
 $mg = new \Eddy\ModularGrid\Wrapper();
 
-$url = $mg->url->forPedal('elektron-overhub');
-$client = new \GuzzleHttp\Client();
-$res = $client->request('GET', $url);
-echo 'Response received' . PHP_EOL;
-$body = $res->getBody()->getContents();
-$crawler = $mg->crawl($body);
+// $url = $mg->url->forPedal('elektron-overhub');
+// $client = new \GuzzleHttp\Client();
+// $res = $client->request('GET', $url);
+// echo 'Response received' . PHP_EOL;
+// $body = $res->getBody()->getContents();
+// $crawler = $mg->crawl($body);
 
-dd($crawler->imageURLs());
+// dd($crawler->imageURLs());
+
+dd($mg->url::extractCategory('https://www.modulargrid.net/e/racks/view/2168167'));
+
 // file_put_contents('html/test2.html', $body);
 // $body = file_get_contents('html/test1.html');
 // dd((new \Eddy\ModularGrid\Crawler\GetLink(new Crawler($body)))->scan());
