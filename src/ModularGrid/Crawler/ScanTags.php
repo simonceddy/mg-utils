@@ -1,5 +1,5 @@
 <?php
-namespace Eddy\ModularGrid\Crawler;
+namespace Eddy\Crawlers\ModularGrid\Crawler;
 
 use Symfony\Component\DomCrawler\Crawler;
 

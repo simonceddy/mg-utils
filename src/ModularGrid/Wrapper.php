@@ -1,8 +1,8 @@
 <?php
-namespace Eddy\ModularGrid;
+namespace Eddy\Crawlers\ModularGrid;
 
-use Eddy\ModularGrid\Crawler\Crawler;
-use Eddy\ModularGrid\Util\URL;
+use Eddy\Crawlers\ModularGrid\Crawler\Crawler;
+use Eddy\Crawlers\ModularGrid\Util\URL;
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\HandlerStack;
 use Illuminate\Support\Facades\Cache;

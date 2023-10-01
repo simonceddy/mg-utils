@@ -1,5 +1,5 @@
 <?php
-namespace Eddy\ModularGrid\Util;
+namespace Eddy\Crawlers\ModularGrid\Util;
 
 /**
  * URL Object
