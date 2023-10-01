@@ -1,6 +1,6 @@
 {
-    "name": "simoneddy/mg-utils",
-    "description": "Utils for crawling and handling data from ModularGrid",
+    "name": "simoneddy/crawlers",
+    "description": "Utils for crawling and handling data from sites like ModularGrid",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -16,7 +16,7 @@
     },
     "autoload": {
        "psr-4": {
-          "Eddy\\ModularGrid\\": "src"
+          "Eddy\\Crawlers\\": "src"
        }
     },
     "require": {
