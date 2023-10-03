@@ -18,7 +18,9 @@ class GetLastPage
         }
 
         try {
-            $ul = $this->crawler->filter(static::$filter)->first();
+            $ul = $this->crawler->filter(static::$filter);
+            if (count($ul) === 0) return null;
+            $ul = $ul->first();
             $totalLi = count($ul->children());
             $lastPage = $ul->children()->eq($totalLi - 2)->text();
     

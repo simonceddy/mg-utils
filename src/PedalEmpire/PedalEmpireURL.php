@@ -81,43 +81,58 @@ namespace Eddy\Crawlers\PedalEmpire;
  */
 class PedalEmpireURL
 {
-    private static array $shortcuts = [
+    public const SHORTCUTS = [
         'bassPedals' => 'bass-pedals',
         'distortion' => 'distortion',
         'overdrive' => 'overdrive',
+        'drive' => 'overdrive',
         'fuzz' => 'fuzz',
         'fuzzWah' => 'fuzz-wah',
         'dualOverdrive' => 'dual-overdrive',
         'trebleBooster' => 'treble-booster',
+        'treble' => 'treble-booster',
         'boost' => 'boost',
         'buffer' => 'buffer',
         'compressor' => 'compressor',
+        'compressors' => 'compressor',
         'controllers' => 'controllers',
         'midiControllers' => 'midi-controllers',
+        'midi' => 'midi-controllers',
         'loopers' => 'loopers',
         'tapTempo' => 'tap-tempo',
+        'tempo' => 'tap-tempo',
         'tuner' => 'tuner',
         'powerSupply' => 'power-supply',
+        'psu' => 'power-supply',
         'aby' => 'aby',
         'expression' => 'expression-pedal',
         'wah' => 'wah',
         'chorus' => 'chorus',
         'phaser' => 'phaser',
-        'tremelo' => 'tremelo',
+        'tremolo' => 'tremolo',
         'pitchShift' => 'pitch-shifting-octave',
+        'pitch' => 'pitch-shifting-octave',
+        'octave' => 'pitch-shifting-octave',
         'flanger' => 'flanger',
         'envelopeFilter' => 'envelope-filter',
+        'envelope' => 'envelope-filter',
+        'filter' => 'envelope-filter',
         'ringModulator' => 'ring-modulator',
+        'ringMod' => 'ring-modulator',
         'harmonizer' => 'harmonizer',
         'synth' => 'synth',
         'multiFx' => 'multi-effects',
+        'multiFX' => 'multi-effects',
+        'multiEffects' => 'multi-effects',
         'delay' => 'delay-1',
         'reverb' => 'reverb',
         'analogDelay' => 'analog-delay',
         'echo' => 'echo',
         'cabSimulator' => 'cab-simulator',
+        'cabSim' => 'cab-simulator',
         'acoustic' => 'acoustic',
         'guitars' => 'guitar',
+        'guitar' => 'guitar',
         'amps' => 'amps',
     ];
 
@@ -141,8 +156,8 @@ class PedalEmpireURL
     {
         if (str_starts_with($name, 'for')) {
             $name = lcfirst(substr($name, 3));
-            if (isset(static::$shortcuts[$name])) {
-                return $this->make(static::$shortcuts[$name], $arguments[0] ?? null);
+            if (isset(static::SHORTCUTS[$name])) {
+                return $this->make(static::SHORTCUTS[$name], $arguments[0] ?? null);
             }
         }
 
@@ -151,8 +166,8 @@ class PedalEmpireURL
 
     public function __get($name)
     {
-        if (isset(static::$shortcuts[$name])) {
-            return $this->make(static::$shortcuts[$name]);
+        if (isset(static::SHORTCUTS[$name])) {
+            return $this->make(static::SHORTCUTS[$name]);
         }
 
         throw new \OutOfBoundsException('Undefined property: ' . $name);

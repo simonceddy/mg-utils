@@ -67,9 +67,9 @@ class ScanCategory
                     ];
                 } else $data[$key] = $bit1;
             }
-            dd($data);
+            // dd($data);
 
-            return null;
+            return $data;
         } catch (\Throwable $e) {
             throw $e;
         }
