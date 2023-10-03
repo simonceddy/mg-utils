@@ -4,18 +4,27 @@ use Symfony\Component\DomCrawler\Crawler;
 
 require 'vendor/autoload.php';
 
-$mg = new \Eddy\ModularGrid\Wrapper();
+// $mg = new \Eddy\Crawlers\ModularGrid\Wrapper();
+// $mn = new \Eddy\Crawlers\Mannys\Client();
+$pe = new \Eddy\Crawlers\PedalEmpire\Client();
 
+$u = $pe->url->forReverb(3);
+// dd($u);
 // $url = $mg->url->forPedal('elektron-overhub');
 // $client = new \GuzzleHttp\Client();
-// $res = $client->request('GET', $url);
-// echo 'Response received' . PHP_EOL;
-// $body = $res->getBody()->getContents();
+$res = $pe->request('GET', $u);
+echo 'Response received' . PHP_EOL;
+$body = $res->getBody()->getContents();
+
+$c = new Crawler($body);
+dump('Last page:', (new \Eddy\Crawlers\PedalEmpire\Crawler\GetLastPage($c))->scan());
+(new \Eddy\Crawlers\PedalEmpire\Crawler($c))->scan();
+// file_put_contents('html/pe.html', $body);
 // $crawler = $mg->crawl($body);
 
 // dd($crawler->imageURLs());
 
-dd($mg->url::extractCategory('https://www.modulargrid.net/e/racks/view/2168167'));
+// dd($mg->url::extractCategory('https://www.modulargrid.net/e/racks/view/2168167'));
 
 // file_put_contents('html/test2.html', $body);
 // $body = file_get_contents('html/test1.html');
