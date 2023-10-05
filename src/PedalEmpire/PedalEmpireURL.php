@@ -141,6 +141,16 @@ class PedalEmpireURL
     public function __construct()
     {}
 
+    public function forItem(string $path)
+    {
+        if (!str_starts_with($path, '/')) $path = '/' . $path;
+        if (str_starts_with($path, '/products')) {
+            return static::BASE . $path;
+        }
+
+        return static::BASE . '/products' . $path;
+    }
+
     public function make(string $path, ?int $page = null)
     {
         if (!str_starts_with($path, '/')) $path = '/' . $path;

@@ -25,6 +25,11 @@ class Crawler
         return $this->scanCategoryCrawler->scan($html);
     }
 
+    public function getProductJson(?string $html = null)
+    {
+        return (new Crawler\GetProductJSON($this->crawler))->scan($html);
+    }
+
     public function getLastPage(?string $html = null)
     {
         return $this->getLastPageCrawler->scan($html);
