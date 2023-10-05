@@ -6,7 +6,7 @@ require 'vendor/autoload.php';
 
 // $mg = new \Eddy\Crawlers\ModularGrid\Wrapper();
 // $mn = new \Eddy\Crawlers\Mannys\Client();
-$pe = new \Eddy\Crawlers\PedalEmpire\Client();
+$pe = new \Eddy\Crawlers\PE();
 
 if (!isset($argv[1])) {
     echo 'No category specified. Exiting...' . PHP_EOL;
@@ -23,7 +23,7 @@ if ($argv[1] === 'list') {
 
 $cat = $argv[1];
 
-$mn = 'for' . ucfirst($cat);
+// $mn = 'for' . ucfirst($cat);
 if (!isset($pe->url::SHORTCUTS[$cat])) {
     throw new \RuntimeException('Unknown category: ' . $cat);
 }
@@ -32,17 +32,15 @@ $u = $pe->url->make($pe->url::SHORTCUTS[$cat]);
 // dd($u);
 // $url = $mg->url->forPedal('elektron-overhub');
 // $client = new \GuzzleHttp\Client();
-$res = $pe->request('GET', $u);
+$res = $pe->client->request('GET', $u);
 echo 'Response received' . PHP_EOL;
 $body = $res->getBody()->getContents();
 
-$c = new Crawler($body);
-$lastPg = (new \Eddy\Crawlers\PedalEmpire\Crawler\GetLastPage($c))->scan();
+$lastPg = $pe->crawler->getLastPage($body);
 
 echo 'Located ' . ($lastPg ?? 1) . ' total page' . ($lastPg && $lastPg === 1 ? '' : 's') . PHP_EOL;
 
-$crawler = (new \Eddy\Crawlers\PedalEmpire\Crawler\ScanCategory($c));
-$data = $crawler->scan();
+$data = $pe->crawler->scanCategoryPage($body);
 
 echo 'Page 1' . PHP_EOL;
 
@@ -54,7 +52,7 @@ if ($lastPg && $lastPg > 1) {
         $res = $pe->request('GET', $u);
         echo 'Response received' . PHP_EOL;
         $body = $res->getBody()->getContents();
-        array_push($data, ...$crawler->scan($body));
+        array_push($data, ...$pe->crawler->scanCategoryPage($body));
         echo 'Page ' . $i . PHP_EOL;
         $i++;
     }
@@ -67,8 +65,7 @@ echo 'Extracted ' . $dataCount . ' total entr' . ($dataCount === 1 ? 'y' : 'ies'
 $json = json_encode($data, JSON_PRETTY_PRINT);
 
 
-file_put_contents('json/' . $cat . '.json', $json);
-
+// file_put_contents('json/' . $cat . '.json', $json);
 echo 'Stored JSON for category ' . $cat . PHP_EOL;
 // file_put_contents('html/pe.html', $body);
 // $crawler = $mg->crawl($body);
