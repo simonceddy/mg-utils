@@ -11,6 +11,8 @@ class Robots
 
     private ?string $sitemap = null;
 
+    private static string $guzzleUserAgent = 'GuzzleHttp/7';
+
     public function __construct(string $text)
     {
         $this->initData($text);
@@ -22,22 +24,31 @@ class Robots
             if (preg_match('/^\#\s?/', $bit)) return false;
             return strlen(trim($bit)) > 0;
         })];
+        // dd($bits);
         $agents = array_filter($bits, fn($bit) => str_starts_with($bit, 'User-agent'));
         $startId = null;
         $endId = null;
         $lastAgent = null;
-        foreach ($agents as $id => $str) {
-            if (isset($startId)) {
-                $endId = $id;
-                $params = array_slice($bits, $startId + 1, $endId - $startId - 1);
-                $transformed = $this->prepareParams($params);
-                $this->agents[$lastAgent] = $transformed;
-            } 
-            $startId = $id;
-            $agent = preg_replace('/^User\-agent\:\s?/', '', $str);
-    
-            $lastAgent = $agent;
-            // dd($agent);
+        if (count($agents) === 1) {
+            $id = array_key_first($agents);
+            $agent = preg_replace('/^User\-agent\:\s?/', '', $bits[$id]);
+            unset($bits[$id]);
+            $this->agents[$agent] = $this->prepareParams($bits);
+            // dd($bits);
+        } else {
+            foreach ($agents as $id => $str) {
+                if (isset($startId)) {
+                    $endId = $id;
+                    $params = array_slice($bits, $startId + 1, $endId - $startId - 1);
+                    $transformed = $this->prepareParams($params);
+                    $this->agents[$lastAgent] = $transformed;
+                } 
+                $startId = $id;
+                $agent = preg_replace('/^User\-agent\:\s?/', '', $str);
+        
+                $lastAgent = $agent;
+                // dd($agent);
+            }
         }
         // dd($this->agents);
         if (count($this->sitemaps) === 1) {
@@ -47,6 +58,7 @@ class Robots
 
     private function prepareParams(array $params)
     {
+        // dd($params);
         $transformed = [];
         foreach ($params as $param) {
             [$key, $val] = $this->prepareParam($param);
@@ -122,5 +134,10 @@ class Robots
             return null;
         }
         return $this->agents[$agent]['Crawl-Delay'];
+    }
+
+    public static function clientAgent()
+    {
+        return self::$guzzleUserAgent;
     }
 }

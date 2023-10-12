@@ -3,38 +3,64 @@ namespace Eddy\Crawlers\ModularGrid;
 
 use Eddy\Crawlers\ModularGrid\Crawler\Crawler;
 use Eddy\Crawlers\ModularGrid\Util\URL;
+use Eddy\Crawlers\Shared\Robots;
 use GuzzleHttp\Client as Guzzle;
-use GuzzleHttp\HandlerStack;
-use Illuminate\Support\Facades\Cache;
-use Kevinrob\GuzzleCache\CacheMiddleware;
-use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
-use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
+// use GuzzleHttp\HandlerStack;
+// use Illuminate\Support\Facades\Cache;
+// use Kevinrob\GuzzleCache\CacheMiddleware;
+// use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
+// use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
 /**
  * Wrapper class for basic functionality
  * 
  * @property URL $url URL factory
  * @property Guzzle $guzzle
  * @property Guzzle $client
+ * @property int $delay
  */
 class Wrapper
 {
+    private Robots $bots;
+
+    /**
+     * Crawl delay in seconds
+     *
+     * @var int
+     */
+    private int $crawlDelay;
+
     public function __construct(private ?Guzzle $guzzle = null)
     {
-        // if (!$guzzle) $this->guzzle = new Guzzle();
+        if (!$guzzle) $this->initGuzzle();
+        $this->initBots();
     }
 
     private function initGuzzle()
     {
-        $stack = HandlerStack::create();
-        $stack->push(new CacheMiddleware(
-            new PrivateCacheStrategy(
-                new LaravelCacheStorage(Cache::store('redis'))
-            )
-        ), 'cache');
+        // $stack = HandlerStack::create();
+        // $stack->push(new CacheMiddleware(
+        //     new PrivateCacheStrategy(
+        //         new LaravelCacheStorage(Cache::store('redis'))
+        //     )
+        // ), 'cache');
         $this->guzzle = new Guzzle([
             'base_uri' => URL::BASE,
-            'handler' => $stack,
+            // 'handler' => $stack,
         ]);
+    }
+
+    private function initBots()
+    {
+        $res = $this->client->request('GET', $this->url->robots);
+        if ($res->getStatusCode() === 404) {
+            return null;
+        }
+        $body = $res->getBody()->getContents();
+
+        $this->bots = new Robots($body);
+        $cd = $this->bots->crawlDelay();
+        if (!$cd) $cd = $this->bots->crawlDelay(Robots::clientAgent());
+        $this->crawlDelay = $cd ?? 3;
     }
 
     public function client()
@@ -48,12 +74,26 @@ class Wrapper
         return new Crawler($html);
     }
 
-    public function ping(string $url, bool $dataOnSuccess = true)
+    public function requestConfig()
     {
-        $res = $this->client()->request('GET', $url, [
+        return [
             'connect_timeout' => 5,
             'http_errors' => false,
+            'delay' => $this->crawlDelay
+        ];
+    }
+
+    public function request(string $method, string $url = '', array $options = [])
+    {
+        return $this->client->request($method, $url, [
+            ...$this->requestConfig(),
+            ...$options
         ]);
+    }
+
+    public function ping(string $url, bool $dataOnSuccess = true)
+    {
+        $res = $this->request('GET', $url);
         $status = $res->getStatusCode();
         $result = $status === 200 || $status === 300;
         if ($result && $dataOnSuccess) {
@@ -62,10 +102,16 @@ class Wrapper
         return $result;
     }
 
+    public function robots()
+    {
+        return $this->bots;
+    }
+
     public function __get($name)
     {
         if ($name === 'url') return new URL();
         if ($name === 'guzzle' || $name === 'client') return $this->client();
+        if ($name === 'delay') return $this->crawlDelay;
 
         throw new \OutOfRangeException('Undefined property: ' . $name);
     }

@@ -1,6 +1,8 @@
 <?php
 namespace Eddy\Crawlers\ModularGrid\Util;
 
+use Eddy\Crawlers\Shared\Robots;
+
 /**
  * URL Object
  * 
@@ -25,6 +27,7 @@ namespace Eddy\Crawlers\ModularGrid\Util;
  * @method static string for500(string $slug, bool $noBase = false)
  * @method static string forAE(string $slug, bool $noBase = false)
  * 
+ * @property string $robots
  */
 class URL
 {
@@ -63,6 +66,17 @@ class URL
     private function urlForItem(string $category, $slug, bool $noBase = false)
     {
         return $this->urlForCategory($category, $noBase) . '/' . $slug;
+    }
+
+    public function robots()
+    {
+        return static::BASE . '/' . Robots::TXT;
+    }
+
+    public function __get($name)
+    {
+        if ($name === 'robots') return $this->robots();
+        throw new \OutOfBoundsException('Undefined property: ' . $name);
     }
 
     public function __call($name, $arguments)
