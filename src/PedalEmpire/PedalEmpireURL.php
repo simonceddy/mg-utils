@@ -1,6 +1,8 @@
 <?php
 namespace Eddy\Crawlers\PedalEmpire;
 
+use Eddy\Crawlers\Shared\Robots;
+
 /**
  * @method string forBassPedals(?int $page = null)
  * @method string forDistortion(?int $page = null)
@@ -77,6 +79,8 @@ namespace Eddy\Crawlers\PedalEmpire;
  * @property string $acoustic
  * @property string $guitars
  * @property string $amps
+ * 
+ * @property string $robots Pedal Empire robots.txt
  * 
  */
 class PedalEmpireURL
@@ -176,6 +180,9 @@ class PedalEmpireURL
 
     public function __get($name)
     {
+        if ($name === 'robots') {
+            return static::BASE . '/' . Robots::TXT;
+        }
         if (isset(static::SHORTCUTS[$name])) {
             return $this->make(static::SHORTCUTS[$name]);
         }

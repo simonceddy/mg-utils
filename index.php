@@ -3,9 +3,12 @@ require 'vendor/autoload.php';
 
 $pe = new \Eddy\Crawlers\PE();
 
-$url = $pe->url->forItem('sea-machine-v2');
+$url = $pe->url->robots;
+// $url = $pe->url->forItem('sea-machine-v2');
 
 $res = $pe->client->request('GET', $url);
+
+// dd($res);
 if ($res->getStatusCode() === 404) {
     echo 'Product page not found for URL: ' . $url . PHP_EOL;
     exit(0);
@@ -13,8 +16,9 @@ if ($res->getStatusCode() === 404) {
 
 $body = $res->getBody()->getContents();
 
-$result = $pe->crawler->getProductJson($body);
-dd($result);
+$bots = new \Eddy\Crawlers\Shared\Robots($body);
+// $result = $pe->crawler->getProductJson($body);
+dd($bots);
 // if (!isset($argv[1])) {
 //     echo 'No category specified. Exiting...' . PHP_EOL;
 //     exit(0);
