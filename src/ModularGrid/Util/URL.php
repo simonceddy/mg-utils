@@ -70,7 +70,7 @@ class URL
 
     public function robots()
     {
-        return static::BASE . '/' . Robots::TXT;
+        return Robots::from(static::BASE);
     }
 
     public function __get($name)

@@ -181,7 +181,7 @@ class PedalEmpireURL
     public function __get($name)
     {
         if ($name === 'robots') {
-            return static::BASE . '/' . Robots::TXT;
+            return Robots::from(static::BASE);
         }
         if (isset(static::SHORTCUTS[$name])) {
             return $this->make(static::SHORTCUTS[$name]);

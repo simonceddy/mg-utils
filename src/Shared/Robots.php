@@ -140,4 +140,10 @@ class Robots
     {
         return self::$guzzleUserAgent;
     }
+
+    public static function from(string $url)
+    {
+        if (!str_ends_with($url, '/')) $url .= '/';
+        return $url . self::TXT;
+    }
 }

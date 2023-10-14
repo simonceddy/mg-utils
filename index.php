@@ -3,9 +3,9 @@ require 'vendor/autoload.php';
 
 $pe = new \Eddy\Crawlers\PE();
 $mg = new \Eddy\Crawlers\MG();
-$mg->ping($mg->url->forEurorack('alm-busy-circuits-pamela-s-pro-workout'));
+$res = $mg->ping($mg->url->forEurorack('alm-busy-circuits-pamela-s-pro-workout'), false);
 // $result = $pe->crawler->getProductJson($body);
-dd($mg);
+dd($res);
 // if (!isset($argv[1])) {
 //     echo 'No category specified. Exiting...' . PHP_EOL;
 //     exit(0);
