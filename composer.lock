@@ -1463,13 +1463,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/simonceddy/robots-helper.git",
-                "reference": "5cde36adc1ce38fa19a658fb0571f808434710ed"
+                "reference": "4cd37a54d517ff777ed172529a4c1a4caedaba44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simonceddy/robots-helper/zipball/5cde36adc1ce38fa19a658fb0571f808434710ed",
-                "reference": "5cde36adc1ce38fa19a658fb0571f808434710ed",
+                "url": "https://api.github.com/repos/simonceddy/robots-helper/zipball/4cd37a54d517ff777ed172529a4c1a4caedaba44",
+                "reference": "4cd37a54d517ff777ed172529a4c1a4caedaba44",
                 "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
             },
             "require-dev": {
                 "phpspec/phpspec": "^7.4",
@@ -1496,7 +1499,7 @@
                 "source": "https://github.com/simonceddy/robots-helper/tree/master",
                 "issues": "https://github.com/simonceddy/robots-helper/issues"
             },
-            "time": "2023-10-15T09:06:12+00:00"
+            "time": "2023-10-15T09:17:17+00:00"
         },
         {
             "name": "symfony/css-selector",
