@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "54875d1c3c8f814484a69d991a1b9bad",
+    "content-hash": "8150dc6ab54229f43c018aa637c669e7",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -1458,6 +1458,47 @@
             "time": "2019-03-08T08:55:37+00:00"
         },
         {
+            "name": "simoneddy/robots-helper",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/simonceddy/robots-helper.git",
+                "reference": "5cde36adc1ce38fa19a658fb0571f808434710ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/simonceddy/robots-helper/zipball/5cde36adc1ce38fa19a658fb0571f808434710ed",
+                "reference": "5cde36adc1ce38fa19a658fb0571f808434710ed",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^7.4",
+                "symfony/var-dumper": "^6.3"
+            },
+            "default-branch": true,
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Eddy\\Robots\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Eddy",
+                    "email": "simon@simoneddy.com.au"
+                }
+            ],
+            "description": "Utility for working with robots.txt files",
+            "support": {
+                "source": "https://github.com/simonceddy/robots-helper/tree/master",
+                "issues": "https://github.com/simonceddy/robots-helper/issues"
+            },
+            "time": "2023-10-15T09:06:12+00:00"
+        },
+        {
             "name": "symfony/css-selector",
             "version": "v6.3.2",
             "source": {
@@ -2240,7 +2281,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "simoneddy/robots-helper": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],

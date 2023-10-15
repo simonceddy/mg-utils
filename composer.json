@@ -25,9 +25,16 @@
         "symfony/css-selector": "^6.3",
         "kevinrob/guzzle-cache-middleware": "^4.1",
         "doctrine/cache": "^2.2",
-        "illuminate/cache": "^10.24"
+        "illuminate/cache": "^10.24",
+        "simoneddy/robots-helper": "dev-master"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.3"
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/simonceddy/robots-helper"
+        }
+    ]
 }
