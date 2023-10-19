@@ -1,11 +1,20 @@
 <?php
 require 'vendor/autoload.php';
 
+$pb = new \Eddy\Crawlers\PB();
 $pe = new \Eddy\Crawlers\PE();
 $mg = new \Eddy\Crawlers\MG();
-$res = $mg->ping($mg->url->forEurorack('alm-busy-circuits-pamela-s-pro-workout'), false);
+
+$sitemapUrl = $pb->robots->getAgent()->getSitemap();
+
+$res = $pb->guzzle->get($sitemapUrl);
+$xml = $res->getBody()->getContents();
+file_put_contents('json/pb-sitemap.xml', $xml);
+$c = new \Symfony\Component\DomCrawler\Crawler($xml);
+dd($c);
+// $res = $mg->ping($mg->url->forEurorack('alm-busy-circuits-pamela-s-pro-workout'), false);
 // $result = $pe->crawler->getProductJson($body);
-dd($res);
+// dd($res);
 // if (!isset($argv[1])) {
 //     echo 'No category specified. Exiting...' . PHP_EOL;
 //     exit(0);
