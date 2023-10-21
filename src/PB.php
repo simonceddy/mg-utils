@@ -1,7 +1,9 @@
 <?php
 namespace Eddy\Crawlers;
 
+use Eddy\Crawlers\PluginBoutique\Crawler;
 use Eddy\Crawlers\PluginBoutique\URL;
+use Eddy\Crawlers\Shared\ClientFactory;
 use Eddy\Robots\{Robots, Factory};
 use GuzzleHttp\Client as Guzzle;
 
@@ -12,6 +14,7 @@ use GuzzleHttp\Client as Guzzle;
  * @property Guzzle $guzzle
  * @property Guzzle $client
  * @property Robots $robots
+ * @property Crawler $crawler
  */
 class PB
 {
@@ -19,11 +22,19 @@ class PB
 
     private Robots $robotsObject;
 
+    private Crawler $domCrawler;
+
     public function __construct(private ?Guzzle $guzzle = null)
     {
         $this->pbURL = new URL();
-        if (!$guzzle) $this->guzzle = new Guzzle([]);
+        if (!$guzzle) $this->guzzle = ClientFactory::pluginBoutique();
         $this->initRobots();
+        $this->initCrawler();
+    }
+
+    private function initCrawler()
+    {
+        $this->domCrawler = new Crawler();
     }
 
     private function initRobots()
@@ -50,6 +61,11 @@ class PB
         return $this->pbURL;
     }
 
+    public function crawler()
+    {
+        return $this->domCrawler;
+    }
+
     public function __call($name, $arguments)
     {
         if (method_exists($this->guzzle, $name)) {
@@ -65,6 +81,7 @@ class PB
     {
         if ($name === 'url') return $this->pbURL;
         if ($name === 'robots') return $this->robotsObject;
+        if ($name === 'crawler') return $this->domCrawler;
         if ($name === 'client' || $name === 'guzzle') return $this->guzzle;
 
         throw new \OutOfBoundsException(

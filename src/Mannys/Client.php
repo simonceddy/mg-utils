@@ -1,6 +1,7 @@
 <?php
 namespace Eddy\Crawlers\Mannys;
 
+use Eddy\Crawlers\Shared\ClientFactory;
 use GuzzleHttp\Client as Guzzle;
 
 /**
@@ -11,9 +12,7 @@ class Client
     public function __construct(private ?Guzzle $guzzle = null)
     {
         if (!$guzzle) {
-            $this->guzzle = new Guzzle([
-                'base_uri' => MannysURL::BASE,
-            ]);
+            $this->guzzle = ClientFactory::mannys();
         }
     }
 

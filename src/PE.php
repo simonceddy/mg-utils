@@ -74,7 +74,7 @@ class PE
         return [
             'connect_timeout' => 5,
             'http_errors' => false,
-            'delay' => $this->crawlDelay
+            'delay' => $this->crawlDelay * 1000
         ];
     }
 

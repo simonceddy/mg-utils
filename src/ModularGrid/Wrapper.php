@@ -3,6 +3,7 @@ namespace Eddy\Crawlers\ModularGrid;
 
 use Eddy\Crawlers\ModularGrid\Crawler\Crawler;
 use Eddy\Crawlers\ModularGrid\Util\URL;
+use Eddy\Crawlers\Shared\ClientFactory;
 use Eddy\Crawlers\Shared\Robots;
 use GuzzleHttp\Client as Guzzle;
 // use GuzzleHttp\HandlerStack;
@@ -43,10 +44,7 @@ class Wrapper
         //         new LaravelCacheStorage(Cache::store('redis'))
         //     )
         // ), 'cache');
-        $this->guzzle = new Guzzle([
-            'base_uri' => URL::BASE,
-            // 'handler' => $stack,
-        ]);
+        $this->guzzle = ClientFactory::modularGrid();
     }
 
     private function initBots()
@@ -79,7 +77,7 @@ class Wrapper
         return [
             'connect_timeout' => 5,
             'http_errors' => false,
-            'delay' => $this->crawlDelay
+            'delay' => $this->crawlDelay * 1000
         ];
     }
 

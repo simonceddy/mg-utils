@@ -1,17 +1,53 @@
 <?php
+
+use Eddy\Crawlers\PluginBoutique\URL;
+use Eddy\Crawlers\Shared\Cache\FSCache;
+use Eddy\Crawlers\Shared\FS\Factory;
+use GuzzleHttp\Psr7\Request;
+
 require 'vendor/autoload.php';
 
 $pb = new \Eddy\Crawlers\PB();
 $pe = new \Eddy\Crawlers\PE();
 $mg = new \Eddy\Crawlers\MG();
+// $html = file_get_contents('html/0-page.html');
+// $pb->crawler->getProductMetadata($html);
+// $sitemapUrl = $pb->robots->getAgent()->getSitemap();
 
-$sitemapUrl = $pb->robots->getAgent()->getSitemap();
+// $res = $pb->guzzle->get($sitemapUrl);
+// $xml = $res->getBody()->getContents();
+// file_put_contents('json/pb-sitemap.xml', $xml);
+// $stream = fopen('json/pb-sitemap.xml', 'r');
+// $xml = file_get_contents('json/pb-sitemap.xml');
+// $parser = xml_parser_create();
+// while (($data = fread($stream, 16384))) {
+//     xml_parse($parser, $data); // parse the current chunk
+// }
+// xml_parse($parser, '', true); // finalize parsing
+// xml_parser_free($parser);
+// $t = simplexml_load_file('json/pb-sitemap.xml');
+// $id = 0;
+// foreach ($t as $node) {
+//     if (isset($node->loc)
+//         && ($node->loc instanceof SimpleXMLElement)
+//         && str_starts_with($node->loc, $pb->url->product)
+//     ) {
+//         $res = $pb->guzzle->get((string) $node->loc, [
+//             'delay' => 3000
+//         ]);
 
-$res = $pb->guzzle->get($sitemapUrl);
-$xml = $res->getBody()->getContents();
-file_put_contents('json/pb-sitemap.xml', $xml);
-$c = new \Symfony\Component\DomCrawler\Crawler($xml);
-dd($c);
+//         if ($res->getStatusCode() !== 200) {
+//             continue;
+//         }
+
+//         $body = $res->getBody()->getContents();
+
+//         file_put_contents('html/' . $id . '-page.html', $body);
+//         echo 'Saved product #' . $id . PHP_EOL;
+
+//         $id++;
+//     }
+// }
 // $res = $mg->ping($mg->url->forEurorack('alm-busy-circuits-pamela-s-pro-workout'), false);
 // $result = $pe->crawler->getProductJson($body);
 // dd($res);
