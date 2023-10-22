@@ -4,6 +4,7 @@ namespace Eddy\Crawlers;
 use Eddy\Crawlers\PedalEmpire\Crawler;
 use Eddy\Crawlers\PedalEmpire\PedalEmpireURL;
 use Eddy\Crawlers\Shared\ClientFactory;
+use Eddy\Crawlers\Shared\CrawlerFactory;
 use Eddy\Crawlers\Shared\Robots;
 use GuzzleHttp\Client as Guzzle;
 use Symfony\Component\DomCrawler\Crawler as SymCrawler;
@@ -32,7 +33,7 @@ class PE
     ) {
         $this->peUrl = new PedalEmpireURL();
         if (!$client) $this->client = ClientFactory::pedalEmpire();
-        if (!$symCrawler) $this->symCrawler = new SymCrawler();
+        if (!$symCrawler) $this->symCrawler = CrawlerFactory::make();
         /* if (!$bots)  */$this->fetchRobots();
     }
 

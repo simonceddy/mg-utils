@@ -1,6 +1,7 @@
 <?php
 namespace Eddy\Crawlers\ModularGrid\Crawler;
 
+use Eddy\Crawlers\Shared\CrawlerFactory;
 use Symfony\Component\DomCrawler\Crawler as SymfonyCrawler;
 
 /**
@@ -24,7 +25,7 @@ class Crawler
 
     public function __construct(private string $document)
     {
-        $this->crawler = new SymfonyCrawler($document);
+        $this->crawler = CrawlerFactory::make($document);
     }
 
     public function __call($name, $arguments)

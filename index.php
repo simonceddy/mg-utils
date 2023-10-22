@@ -1,17 +1,14 @@
 <?php
-
-use Eddy\Crawlers\PluginBoutique\URL;
-use Eddy\Crawlers\Shared\Cache\FSCache;
-use Eddy\Crawlers\Shared\FS\Factory;
-use GuzzleHttp\Psr7\Request;
-
 require 'vendor/autoload.php';
 
-$pb = new \Eddy\Crawlers\PB();
-$pe = new \Eddy\Crawlers\PE();
-$mg = new \Eddy\Crawlers\MG();
-// $html = file_get_contents('html/0-page.html');
-// $pb->crawler->getProductMetadata($html);
+// $pb = new \Eddy\Crawlers\PB();
+// $pe = new \Eddy\Crawlers\PE();
+// $mg = new \Eddy\Crawlers\MG();
+$crawler = new \Eddy\Crawlers\PluginBoutique\Crawler();
+$html = file_get_contents('html/0-page.html');
+$result = $crawler->getProductMetadata($html);
+// $result = $pb->crawler->getProductMetadata($html);
+dd($result);
 // $sitemapUrl = $pb->robots->getAgent()->getSitemap();
 
 // $res = $pb->guzzle->get($sitemapUrl);
