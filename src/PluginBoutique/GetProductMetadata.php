@@ -86,10 +86,10 @@ class GetProductMetadata
             [$name, $value] = $this->extractAttributeData($val);
             if (isset(static::$validAttributes[$name])) {
                 if ($name === 'itemprop') {
-                    $data[$name] = array_unique([
-                        $value,
-                        $this->getItemProp($value, $val)
-                    ]);
+                    $data[$name] = [
+                        'name' => $value,
+                        'value' => $this->getItemProp($value, $val)
+                    ];
                 } else $data[$name] = $value;
             }
         }

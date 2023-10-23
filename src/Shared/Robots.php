@@ -12,9 +12,14 @@ class Robots
 
     private static string $guzzleUserAgent = 'GuzzleHttp/7';
 
-    public function __construct(string $text)
+    public function __construct(mixed $text)
     {
-        $this->initData($text);
+        if (is_string($text)) $this->initData($text);
+        else if (!($text instanceof RobotsRobots)) {
+            throw new \InvalidArgumentException(
+                'Invalid robots!'
+            );
+        } else $this->robots = $text;
     }
     
     private function initData(string $text)

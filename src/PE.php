@@ -5,6 +5,7 @@ use Eddy\Crawlers\PedalEmpire\Crawler;
 use Eddy\Crawlers\PedalEmpire\PedalEmpireURL;
 use Eddy\Crawlers\Shared\ClientFactory;
 use Eddy\Crawlers\Shared\CrawlerFactory;
+use Eddy\Crawlers\Shared\InitRobots;
 use Eddy\Crawlers\Shared\Robots;
 use GuzzleHttp\Client as Guzzle;
 use Symfony\Component\DomCrawler\Crawler as SymCrawler;
@@ -39,13 +40,7 @@ class PE
 
     private function fetchRobots()
     {
-        $res = $this->client->request('GET', $this->url->robots);
-        if ($res->getStatusCode() === 404) {
-            return null;
-        }
-        $body = $res->getBody()->getContents();
-
-        $this->bots = new Robots($body);
+        $this->bots = new Robots((new InitRobots($this->client))->from($this->peUrl->robots));
         $cd = $this->bots->crawlDelay();
         if (!$cd) $cd = $this->bots->crawlDelay(Robots::clientAgent());
         $this->crawlDelay = $cd ?? 3;

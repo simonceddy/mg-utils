@@ -4,6 +4,7 @@ namespace Eddy\Crawlers\ModularGrid;
 use Eddy\Crawlers\ModularGrid\Crawler\Crawler;
 use Eddy\Crawlers\ModularGrid\Util\URL;
 use Eddy\Crawlers\Shared\ClientFactory;
+use Eddy\Crawlers\Shared\InitRobots;
 use Eddy\Crawlers\Shared\Robots;
 use GuzzleHttp\Client as Guzzle;
 // use GuzzleHttp\HandlerStack;
@@ -49,13 +50,7 @@ class Wrapper
 
     private function initBots()
     {
-        $res = $this->client->request('GET', $this->url->robots);
-        if ($res->getStatusCode() === 404) {
-            return null;
-        }
-        $body = $res->getBody()->getContents();
-
-        $this->bots = new Robots($body);
+        $this->bots = new Robots((new InitRobots($this->guzzle))->from($this->url->robots));
         $cd = $this->bots->crawlDelay();
         if (!$cd) $cd = $this->bots->crawlDelay(Robots::clientAgent());
         $this->crawlDelay = $cd ?? 3;

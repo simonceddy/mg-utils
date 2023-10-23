@@ -1,13 +1,21 @@
 <?php
 require 'vendor/autoload.php';
 
-// $pb = new \Eddy\Crawlers\PB();
-// $pe = new \Eddy\Crawlers\PE();
-// $mg = new \Eddy\Crawlers\MG();
-$crawler = new \Eddy\Crawlers\PluginBoutique\Crawler();
+$pb = new \Eddy\Crawlers\PB();
+// (new \Eddy\Crawlers\Shared\FS\StoreRobots(\Eddy\Crawlers\Shared\FS\Factory::make()))
+//     ->save($pb->url::robots(), $pb->robots->toString());
+
+// dd((new \Eddy\Crawlers\Shared\InitRobots(
+//     $pb->client,
+//     \Eddy\Crawlers\Shared\FS\Factory::make()
+// ))->from($pb->url::robots()));
+
+$pe = new \Eddy\Crawlers\PE();
+$mg = new \Eddy\Crawlers\MG();
+// $crawler = new \Eddy\Crawlers\PluginBoutique\Crawler();
 $html = file_get_contents('html/0-page.html');
-$result = $crawler->getProductMetadata($html);
-// $result = $pb->crawler->getProductMetadata($html);
+// $result = $crawler->getProductMetadata($html);
+$result = $pb->crawler->getProductMetadata($html);
 dd($result);
 // $sitemapUrl = $pb->robots->getAgent()->getSitemap();
 

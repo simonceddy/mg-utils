@@ -28,7 +28,8 @@ class PB
     {
         $this->pbURL = new URL();
         if (!$guzzle) $this->guzzle = ClientFactory::pluginBoutique();
-        $this->initRobots();
+        $this->robotsObject = (new Shared\InitRobots($this->guzzle))
+            ->from($this->pbURL->robots);
         $this->initCrawler();
     }
 
@@ -37,18 +38,20 @@ class PB
         $this->domCrawler = new Crawler();
     }
 
-    private function initRobots()
+    private function requestConfig()
     {
-        $url = URL::robots();
+        return [
+            'http_errors' => false,
+            'delay' => 3000
+        ];
+    }
 
-        $res = $this->guzzle->request('GET', $url);
-        if ($res->getStatusCode() !== 200) {
-            throw new \RuntimeException(
-                'Could not locate ' . Robots::TXT
-            );
-        }
-        $body = $res->getBody()->getContents();
-        $this->robotsObject = Factory::make($body);
+    public function request(string $method, string $url = '', array $options = [])
+    {
+        return $this->client->request($method, $url, [
+            ...$this->requestConfig(),
+            ...$options
+        ]);
     }
 
     public function client(): Guzzle
