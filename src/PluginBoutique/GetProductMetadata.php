@@ -29,7 +29,7 @@ class GetProductMetadata
                 $data = [];
                 foreach ($node->attributes as $id => $a) {
                     [$key, $val] = $this->extractAttributeData($a);
-                    $data[$id] = [$key => $val];
+                    $data[$id] = $val;
                 }
                 $result[] = $data;
             }
@@ -133,6 +133,29 @@ class GetProductMetadata
         return $data;
     }
 
+    private function iterateDataArray(array $data)
+    {
+        $result = [];
+
+        foreach ($data as $d) {
+            $v = $d['content'] ?? $d['href'] ?? null;
+            $result[$d['itemprop']] = is_array($v)
+                ? $this->iterateDataArray($v)
+                : $v;
+        }
+
+        return $result;
+    }
+
+    private function transformDataArray(array $data)
+    {
+        $data = array_filter(
+            array_merge(...array_values($data)),
+            fn($v) => isset($v['content']) && isset($v['itemprop'])
+        );
+        return $this->iterateDataArray($data);
+    }
+
     public function scan(?string $html = null)
     {
         if ($html) {
@@ -147,9 +170,7 @@ class GetProductMetadata
         if ($el && $el->children()->count() > 0) {
             $data = $this->scanChildNodes($el->children());
 
-            if ($data) {
-                $data = array_merge(...array_values($data));
-            }
+            if ($data) return $this->transformDataArray($data);
         }
 
         return $data;
