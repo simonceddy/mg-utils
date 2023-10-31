@@ -9,13 +9,22 @@ $pb = new \Eddy\Crawlers\PB();
 //     $pb->client,
 //     \Eddy\Crawlers\Shared\FS\Factory::make()
 // ))->from($pb->url::robots()));
-
+$productPath = '5391-Phase-Plant';
 $pe = new \Eddy\Crawlers\PE();
 $mg = new \Eddy\Crawlers\MG();
 // $crawler = new \Eddy\Crawlers\PluginBoutique\Crawler();
-$html = file_get_contents('html/0-page.html');
+
+$url = $pb->url->product($productPath);
+$res = $pb->client->get($url, $pb->requestConfig());
+if ($res->getStatusCode() !== 200) {
+    echo 'Bad url!' . PHP_EOL;
+    exit(1);
+}
+$html = $res->getBody()->getContents();
+// $html = file_get_contents('html/0-page.html');
 // $result = $crawler->getProductMetadata($html);
 $result = $pb->crawler->getProductMetadata($html);
+file_put_contents('json/phaseplant.json', json_encode($result, JSON_PRETTY_PRINT));
 dd($result);
 // $sitemapUrl = $pb->robots->getAgent()->getSitemap();
 

@@ -8,6 +8,7 @@ class Factory
 {
     public static function make(): Filesystem
     {
+        // TODO check for existing FS for laravel
         $cacheDir = self::root_dir() . DIRECTORY_SEPARATOR . 'cache';
         if (!is_dir($cacheDir)) {
             mkdir($cacheDir);

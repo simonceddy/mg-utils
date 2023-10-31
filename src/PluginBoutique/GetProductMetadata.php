@@ -50,7 +50,8 @@ class GetProductMetadata
                 $data = [];
                 foreach ($attr as $id => $a) {
                     [$key, $val] = $this->extractAttributeData($a);
-                    $data[$id] = [$key => $val];
+                    $data[$id] = $val;
+                    // $data[$id] = [$key => $val];
                 }
                 $result[] = $data;
             }
@@ -60,16 +61,25 @@ class GetProductMetadata
 
     private function getItemProp(string $name, \DOMAttr $attribute)
     {
+        $data = [
+            'itemprop' => $name,
+            'content' => $name,
+        ];
         switch ($name) {
             case 'aggregateRating':
-                return ['aggregateRating' => $this->getRating($attribute)];
+                $data['content'] = $this->getRating($attribute);
+                break;
             case 'description':
-                return ['description' => $this->getDescription($attribute)];
+                $data['content'] = $this->getDescription($attribute);
+                break;
             case 'offers':
-                return ['offers' => $this->getPriceFromOffers($attribute)];
+                $data['content'] = $this->getPriceFromOffers($attribute);
+                break;
             default:
                 return $name;
         }
+
+        return $data;
     }
 
     private function extractAttributeData(\DOMAttr $attribute)
@@ -86,10 +96,10 @@ class GetProductMetadata
             [$name, $value] = $this->extractAttributeData($val);
             if (isset(static::$validAttributes[$name])) {
                 if ($name === 'itemprop') {
-                    $data[$name] = [
-                        'name' => $value,
-                        'value' => $this->getItemProp($value, $val)
-                    ];
+                    $d = $this->getItemProp($value, $val);
+                    if (is_array($d)) {
+                        return $d;
+                    } else $data[$name] = $d;
                 } else $data[$name] = $value;
             }
         }
@@ -104,6 +114,7 @@ class GetProductMetadata
         foreach ($node->childNodes as $childNode) {
             if ($childNode->attributes) {
                 $d = $this->scanAttributes($childNode->attributes);
+                // dump($d);
                 if ($d) $data[] = $d;
             }
         }
@@ -135,6 +146,10 @@ class GetProductMetadata
             ->first();
         if ($el && $el->children()->count() > 0) {
             $data = $this->scanChildNodes($el->children());
+
+            if ($data) {
+                $data = array_merge(...array_values($data));
+            }
         }
 
         return $data;

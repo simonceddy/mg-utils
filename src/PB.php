@@ -38,7 +38,7 @@ class PB
         $this->domCrawler = new Crawler();
     }
 
-    private function requestConfig()
+    public function requestConfig()
     {
         return [
             'http_errors' => false,
